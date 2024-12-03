@@ -109,6 +109,7 @@ export interface Product {
   id: number;
   name: string;
   quantity: number;
+  sku?: string | null;
   price?: number | null;
   description?: string | null;
   updatedAt: string;
@@ -264,6 +265,7 @@ export interface MediaSelect<T extends boolean = true> {
 export interface ProductsSelect<T extends boolean = true> {
   name?: T;
   quantity?: T;
+  sku?: T;
   price?: T;
   description?: T;
   updatedAt?: T;

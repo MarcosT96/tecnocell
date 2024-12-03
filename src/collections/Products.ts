@@ -34,6 +34,14 @@ export const Products: CollectionConfig = {
       required: true,
     },
     {
+      name: 'sku',
+      type: 'text',
+      label: {
+        es: 'Código del Producto'
+      },
+      required: false,
+    },
+    {
       name: 'price',
       type: 'number',
       label: {
