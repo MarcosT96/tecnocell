@@ -54,6 +54,23 @@ export const Orders: CollectionConfig = {
     },
   ],
   hooks: {
+    beforeChange: [
+      async ({ data, req }) => {
+        for (const item of data.items) {
+          const product = await req.payload.findByID({
+            collection: 'products',
+            id: item.productId
+          });
+
+          if (product.quantity < item.quantity) {
+            const error = new Error(`No hay suficiente stock del producto ${product.name}. Stock disponible: ${product.quantity}`);
+            error.name = 'ValidationError';
+            throw error;
+          }
+        }
+        return data;
+      }
+    ],
     afterChange: [
       async ({ 
         doc,      // documento actual (la orden)
@@ -81,6 +98,18 @@ export const Orders: CollectionConfig = {
               });
             }
           }
+        }
+      }
+    ],
+    afterError: [
+      async ({ error, result }) => {
+        return {
+          ...result,
+          errors: [{
+            message: error.message,
+            name: 'ValidationError'
+          }],
+          status: 400
         }
       }
     ]
