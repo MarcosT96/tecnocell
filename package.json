@@ -17,6 +17,7 @@
   "dependencies": {
     "@payloadcms/db-sqlite": "latest",
     "@payloadcms/db-vercel-postgres": "^3.2.2",
+    "@payloadcms/email-resend": "^3.2.2",
     "@payloadcms/next": "latest",
     "@payloadcms/payload-cloud": "latest",
     "@payloadcms/richtext-lexical": "latest",

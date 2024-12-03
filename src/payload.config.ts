@@ -5,7 +5,7 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
-
+import { resendAdapter } from '@payloadcms/email-resend'
 import { es } from '@payloadcms/translations/languages/es'
 
 import { Users } from './collections/Users'
@@ -41,5 +41,10 @@ export default buildConfig({
   i18n: {
     supportedLanguages: { es },
     fallbackLanguage: 'es', // default
-  }
+  },
+  email: resendAdapter({
+    defaultFromAddress: 'info@grupo-met.com',
+    defaultFromName: 'Tecnocell Balvanera',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
 })
