@@ -13,9 +13,9 @@ export const Products: CollectionConfig = {
   admin: {
     useAsTitle: 'name' // Asumiendo que tienes un campo 'name' en tus productos
   },
-  // access: {
-  //   read: () => true,
-  // },
+  access: {
+    read: () => true,
+  },
   fields: [
     {
       name: 'name',
@@ -51,11 +51,20 @@ export const Products: CollectionConfig = {
     },
     {
       name: 'description',
-      type: 'text',
+      type: 'textarea',
       label: {
         es: 'Descripción'
       },
       required: false,
+    },
+    {
+      name: 'category',
+      type: 'relationship',
+      relationTo: 'categories',
+      label: {
+        es: 'Categoría'
+      },
+      required: false
     },
   ]
 }
