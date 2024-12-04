@@ -10,8 +10,8 @@ export const Orders: CollectionConfig = {
       es: 'Ordenes'
     }
   },
-  access: {
-    read: () => true,
+  admin: {
+    useAsTitle: 'id',
   },
   fields: [
     {
