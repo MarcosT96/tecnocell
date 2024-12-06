@@ -11,7 +11,8 @@ export const Products: CollectionConfig = {
     }
   },
   admin: {
-    useAsTitle: 'name' // Asumiendo que tienes un campo 'name' en tus productos
+    useAsTitle: 'name', // Asumiendo que tienes un campo 'name' en tus productos
+    group: 'Tienda',
   },
   access: {
     read: () => true,
