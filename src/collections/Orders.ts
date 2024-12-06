@@ -11,9 +11,10 @@ export const Orders: CollectionConfig = {
     }
   },
   admin: {
-    useAsTitle: 'orderNumber',
+    useAsTitle: 'customer',
     defaultColumns: ['orderNumber', 'customer', 'items', 'total', 'createdAt'],
     group: 'Tienda',
+    listSearchableFields: ['customer.name'],
   },
   access: {
     // ... mantener permisos existentes ...
