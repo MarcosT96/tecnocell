@@ -96,12 +96,14 @@ export interface Category {
  */
 export interface Order {
   id: number;
+  orderNumber?: string | null;
+  customer: number | Customer;
+  total?: number | null;
   items: {
     productId: number | Product;
     quantity: number;
     id?: string | null;
   }[];
-  customer?: (number | null) | Customer;
   updatedAt: string;
   createdAt: string;
 }
@@ -254,6 +256,9 @@ export interface CategoriesSelect<T extends boolean = true> {
  * via the `definition` "orders_select".
  */
 export interface OrdersSelect<T extends boolean = true> {
+  orderNumber?: T;
+  customer?: T;
+  total?: T;
   items?:
     | T
     | {
@@ -261,7 +266,6 @@ export interface OrdersSelect<T extends boolean = true> {
         quantity?: T;
         id?: T;
       };
-  customer?: T;
   updatedAt?: T;
   createdAt?: T;
 }
