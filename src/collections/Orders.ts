@@ -11,9 +11,78 @@ export const Orders: CollectionConfig = {
     }
   },
   admin: {
-    useAsTitle: 'id',
+    useAsTitle: 'orderNumber',
+    defaultColumns: ['orderNumber', 'customer', 'items', 'total', 'createdAt'],
+    group: 'Tienda',
+  },
+  access: {
+    // ... mantener permisos existentes ...
   },
   fields: [
+    {
+      name: 'orderNumber',
+      type: 'text',
+      label: {
+        es: 'N° Pedido'
+      },
+      admin: {
+        readOnly: true,
+      },
+      hooks: {
+        beforeChange: [
+          async ({ data, req, operation, originalDoc }) => {
+            if (operation === 'create' && data) {
+              const lastOrder = await req.payload.find({
+                collection: 'orders',
+                limit: 1,
+              })
+              const nextNumber = lastOrder.docs.length > 0 ? parseInt(String(lastOrder.docs[0].id)) + 1 : 1
+              data.orderNumber = `Pedido N° ${nextNumber}`
+            }
+            return originalDoc?.orderNumber
+          }
+        ]
+      }
+    },
+    {
+      name: 'customer',
+      type: 'relationship',
+      relationTo: 'customers',
+      required: true,
+      index: true,
+      label: {
+        es: 'Cliente'
+      },
+    },
+    {
+      name: 'total',
+      type: 'number',
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+      },
+      hooks: {
+        beforeChange: [
+          async ({ data, req }) => {
+            if (!data?.items || !Array.isArray(data.items)) return 0;
+            
+            let total = 0;
+            for (const item of data.items) {
+              const product = await req.payload.findByID({
+                collection: 'products',
+                id: item.productId,
+              });
+              
+              if (product?.price) {
+                total += product.price * item.quantity;
+              }
+            }
+            
+            return total;
+          },
+        ],
+      },
+    },
     {
       name: 'items',
       type: 'array',
@@ -42,15 +111,6 @@ export const Orders: CollectionConfig = {
           min: 1
         }
       ]
-    },
-    {
-      name: 'customer',
-      type: 'relationship',
-      relationTo: 'customers',
-      label: {
-        es: 'Cliente'
-      },
-      required: false,
     },
   ],
   hooks: {
