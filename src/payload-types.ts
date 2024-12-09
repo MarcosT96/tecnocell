@@ -105,6 +105,7 @@ export interface Order {
     id?: string | null;
   }[];
   status: 'pending' | 'completed' | 'cancelled';
+  isDelivered?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -268,6 +269,7 @@ export interface OrdersSelect<T extends boolean = true> {
         id?: T;
       };
   status?: T;
+  isDelivered?: T;
   updatedAt?: T;
   createdAt?: T;
 }

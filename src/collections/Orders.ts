@@ -157,6 +157,29 @@ export const Orders: CollectionConfig = {
           }
         ]
       }
+    },
+    {
+      name: 'isDelivered',
+      type: 'checkbox',
+      label: {
+        es: 'Retirado'
+      },
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Marcar cuando el cliente retire el pedido',
+      },
+      hooks: {
+        beforeChange: [
+          async ({ value, data }) => {
+            // Si se marca como retirado, actualizar el estado a completado
+            if (value === true && data) {
+              data.status = 'completed'
+            }
+            return value
+          }
+        ]
+      }
     }
   ],
   hooks: {
