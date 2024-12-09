@@ -12,7 +12,7 @@ export const Orders: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'customer',
-    defaultColumns: ['orderNumber', 'customer', 'items', 'total', 'createdAt'],
+    defaultColumns: ['orderNumber', 'customer', 'items', 'total', 'isDelivered', 'createdAt'],
     group: 'Tienda',
     listSearchableFields: ['orderNumber', 'customer.name'],
   },
