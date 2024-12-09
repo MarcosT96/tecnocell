@@ -113,6 +113,51 @@ export const Orders: CollectionConfig = {
         }
       ]
     },
+    {
+      name: 'status',
+      type: 'select',
+      label: {
+        es: 'Estado'
+      },
+      options: [
+        { label: 'Pendiente', value: 'pending' },
+        { label: 'Completado', value: 'completed' },
+        { label: 'Cancelado', value: 'cancelled' },
+      ],
+      defaultValue: 'pending',
+      required: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Estado del pedido',
+      },
+      hooks: {
+        beforeChange: [
+          async ({ req, value, originalDoc }) => {
+            // Si el estado cambia a cancelado
+            if (value === 'cancelled' && originalDoc?.status !== 'cancelled') {
+              // Devolver stock de cada producto
+              for (const item of originalDoc.items || []) {
+                const product = await req.payload.findByID({
+                  collection: 'products',
+                  id: item.productId, // Cambiado de item.product a item.productId
+                })
+      
+                if (product) {
+                  await req.payload.update({
+                    collection: 'products',
+                    id: item.productId, // Cambiado de item.product a item.productId
+                    data: {
+                      quantity: (product.quantity || 0) + item.quantity // Usando quantity en ambos lados
+                    }
+                  })
+                }
+              }
+            }
+            return value
+          }
+        ]
+      }
+    }
   ],
   hooks: {
     beforeChange: [

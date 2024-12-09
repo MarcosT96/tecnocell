@@ -104,6 +104,7 @@ export interface Order {
     quantity: number;
     id?: string | null;
   }[];
+  status: 'pending' | 'completed' | 'cancelled';
   updatedAt: string;
   createdAt: string;
 }
@@ -266,6 +267,7 @@ export interface OrdersSelect<T extends boolean = true> {
         quantity?: T;
         id?: T;
       };
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }
